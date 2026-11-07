@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-// loading screen UI pretty straight forward
+// loading screen UI.. pretty straight forward
 struct SplashView: View {
     let nyx1 = Color(hex: 0xFFD479)
     let nyx2 = Color(hex: 0x73FDFF)

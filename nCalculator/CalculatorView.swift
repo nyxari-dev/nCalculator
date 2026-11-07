@@ -186,7 +186,7 @@ struct CalcButton: View {
             .font(.title)
             .frame(maxWidth: .infinity, minHeight: 80)
             .foregroundStyle(.primary)
-
+// applies liquid glass based on the operating system
         if #available(iOS 26.0, *) {
             text.glassEffect(.regular.interactive(), in: .rect(cornerRadius: 40))
         } else {

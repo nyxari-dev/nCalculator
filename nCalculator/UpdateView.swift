@@ -14,7 +14,7 @@ struct Feature: Identifiable {
 struct UpdateView: View {
     
     var onContinue: () -> Void
-    
+    // feature icons, title and disc
     let features = [
             Feature(icon: "paintpalette.fill",
                     title: "New Theme",
