@@ -1,9 +1,10 @@
 
 import SwiftUI
+
 // loading screen UI pretty straight forward
 struct SplashView: View {
-     let nyx1 = Color(hex: 0xFFD479)
-     let nyx2 = Color(hex: 0x73FDFF)
+    let nyx1 = Color(hex: 0xFFD479)
+    let nyx2 = Color(hex: 0x73FDFF)
 
     var body: some View {
         ZStack {
@@ -30,6 +31,7 @@ struct SplashView: View {
         }
     }
 }
+
 // color extension
 extension Color {
     // Light mode
@@ -49,25 +51,53 @@ extension Color {
         )
     }
 }
+
 #Preview {
     SplashView()
 }
-// logic for loading screen
+
+// which screen is showing
+enum Screen {
+    case splash
+    case whatsNew
+    case calculator
+}
+
+// logic for loading screen -> update screen -> calculator
 struct ContentView: View {
-    @State var showSplash = true
+    @State private var screen: Screen = .splash
+    @AppStorage("lastSeenVersion") private var lastSeenVersion = ""
+
+    private var currentVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+    }
+
     var body: some View {
-        ZStack{
-            if showSplash {
+        ZStack {
+            switch screen {
+            case .splash:
                 SplashView()
                     .transition(.opacity)
-            } else {
+
+            case .whatsNew:
+                UpdateView {
+                    lastSeenVersion = currentVersion
+                    withAnimation(.easeInOut(duration: 0.5)) {
+                        screen = .calculator
+                    }
+                }
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+
+            case .calculator:
                 CalculatorView()
                     .transition(.opacity)
             }
-        } .task {
+        }
+        .task {
             try? await Task.sleep(for: .seconds(2))
-            withAnimation(.easeInOut(duration: 0.5)) {
-                showSplash = false
+            withAnimation(.easeInOut(duration: 0.6)) {
+                // new version? show the update screen, otherwise go straight to the calculator
+                screen = (lastSeenVersion != currentVersion) ? .whatsNew : .calculator
             }
         }
     }

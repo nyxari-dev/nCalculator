@@ -2,7 +2,7 @@ import SwiftUI
 // button array
 struct CalculatorView: View {
     let rows: [[String]] = [
-        ["C", "÷", "="],
+        ["C", "÷", "%", "="],
         ["7", "8", "9", "×"],
         ["4", "5", "6", "−"],
         ["1", "2", "3", "+"]
@@ -112,7 +112,7 @@ struct CalculatorView: View {
                 }
             }
         // operation button logic
-        case "+", "−", "×", "÷":
+        case "+", "−", "×", "÷","%":
             if let first = firstNum, pendingOperator != "", !startNewNum {
                 let second = Double(display) ?? 0
 
@@ -141,6 +141,7 @@ struct CalculatorView: View {
         case "−": return a - b
         case "×": return a * b
         case "÷": return b == 0 ? nil : a / b
+        case "%": return (a / 100) * b
         default: return nil
         }
     }
